@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Author } from 'src/author/entities/author.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 @ObjectType()
@@ -16,4 +17,12 @@ export class Post {
   @Field({ nullable: true })
   @Column({ type: 'text', nullable: true })
   content?: string;
+
+  @Column()
+  @Field(() => Int)
+  authorId: number;
+
+  @ManyToOne(() => Author, (author) => author.posts)
+  @Field(() => Author)
+  author: Author;
 }
