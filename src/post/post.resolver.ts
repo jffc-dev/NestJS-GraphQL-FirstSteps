@@ -34,7 +34,7 @@ export class PostResolver {
     })
     id: number,
   ) {
-    return this.postService.findProductById(id);
+    return this.postService.findPostById(id);
   }
 
   @Mutation((returns) => Post)

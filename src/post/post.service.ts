@@ -17,10 +17,18 @@ export class PostService {
     return await this.postRepository.find();
   }
 
-  async findProductById(id: number): Promise<Post> {
+  async findPostById(id: number): Promise<Post> {
     return await this.postRepository.findOne({
       where: {
         id: id,
+      },
+    });
+  }
+
+  async findPostsByAuthor(authorId: number): Promise<Post[]> {
+    return await this.postRepository.find({
+      where: {
+        authorId: authorId,
       },
     });
   }
