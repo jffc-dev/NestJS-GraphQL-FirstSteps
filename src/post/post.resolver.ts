@@ -1,16 +1,30 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Int,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { PostService } from './post.service';
 import { Post } from './post.entity';
 import { CreatePostInput } from './dto/create-post.input';
+import { Author } from 'src/author/entities/author.entity';
 
-@Resolver()
+@Resolver((of) => Post)
 export class PostResolver {
   constructor(private postService: PostService) {}
 
   @Query((returns) => [Post])
   posts() {
     return this.postService.findAll();
+  }
+
+  @ResolveField((returns) => Author)
+  author(@Parent() post: Post) {
+    return this.postService.getAuthor(post.authorId);
   }
 
   @Query((returns) => Post)
