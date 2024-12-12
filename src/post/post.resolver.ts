@@ -13,21 +13,21 @@ import { Post } from './post.entity';
 import { CreatePostInput } from './dto/create-post.input';
 import { Author } from 'src/author/entities/author.entity';
 
-@Resolver((of) => Post)
+@Resolver(() => Post)
 export class PostResolver {
   constructor(private postService: PostService) {}
 
-  @Query((returns) => [Post])
+  @Query(() => [Post])
   posts() {
     return this.postService.findAll();
   }
 
-  @ResolveField((returns) => Author)
+  @ResolveField(() => Author)
   author(@Parent() post: Post) {
     return this.postService.getAuthor(post.authorId);
   }
 
-  @Query((returns) => Post)
+  @Query(() => Post)
   post(
     @Args('id', {
       type: () => Int,
@@ -37,7 +37,7 @@ export class PostResolver {
     return this.postService.findPostById(id);
   }
 
-  @Mutation((returns) => Post)
+  @Mutation(() => Post)
   createPost(@Args('postInput') postInput: CreatePostInput) {
     return this.postService.createPost(postInput);
   }

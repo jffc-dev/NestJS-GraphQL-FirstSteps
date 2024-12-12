@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { Post } from './post.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -10,6 +10,7 @@ import { AuthorService } from 'src/author/author.service';
 export class PostService {
   constructor(
     @InjectRepository(Post) private postRepository: Repository<Post>,
+    @Inject(forwardRef(() => AuthorService))
     private authorService: AuthorService,
   ) {}
 
@@ -38,7 +39,7 @@ export class PostService {
     return await this.postRepository.save(newPost);
   }
 
-  getAuthor(userId: number): Promise<Author> {
-    return this.authorService.findOne(userId);
+  async getAuthor(authorId: number): Promise<Author> {
+    return await this.authorService.findOne(authorId);
   }
 }
